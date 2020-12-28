@@ -17,6 +17,7 @@ class Search extends Component {
 
     render() {
         return (
+            <>
             <form className="form" onSubmit={this.onSubmit}>
             <input 
             
@@ -32,6 +33,15 @@ class Search extends Component {
                 className="btn btn-dark btn-block"
             />
             </form>
+            {this.props.displayClearBtn && (
+                <button 
+                    className="btn btn-light btn-block" 
+                    onClick={this.props.clearUsers}>
+                    Clear
+                    </button>
+            )} 
+            
+            </>
         )
     }
 }

@@ -8,7 +8,7 @@ import Search from './components/Search'
   
   class App extends Component {
 
-    state= {
+    state = {
       users: [],
       loading: false
     }
@@ -19,20 +19,25 @@ import Search from './components/Search'
     //  console.log(res.data)
     //  this.setState({users: res.data, loading: false})
     // }
-
+// Search users
     searchUsers = async (text) =>{
       this.setState({loading: true})
      const res = await axios.get(`https://api.github.com/search/users?q=${text}`)
      console.log(res.data)
      this.setState({users: res.data.items, loading: false})
     }
+
+  // Clear Users
+  clearUsers =() =>{
+    this.setState({users: [], loading: false})
+  }
     render() {
       return (
         <div className="App">
           
           <Navbar title='GitHub Lookup' icon='fa fa-github'/>
           <div className="container">
-            <Search searchUsers={this.searchUsers}/>
+            <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} displayClearBtn={this.state.users.length > 0 ? true : false} />
             <Users users = {this.state.users} loading={this.state.loading}/>
           </div>
           
