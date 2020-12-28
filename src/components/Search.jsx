@@ -10,8 +10,13 @@ class Search extends Component {
  }
  onSubmit = (e) =>{
      e.preventDefault();
-    this.props.searchUsers(this.state.searchInput);
-    this.setState({searchInput: ''})
+     if(this.state.searchInput === ''){
+        this.props.setAlert('Please Enter a Value', 'danger')
+     }else{
+        this.props.searchUsers(this.state.searchInput);
+        this.setState({searchInput: ''})
+     }
+  
 
  }
 
@@ -30,7 +35,7 @@ class Search extends Component {
             <input 
                 type="submit" 
                 value="Search" 
-                className="btn btn-dark btn-block"
+                className="btn btn-primary btn-block"
             />
             </form>
             {this.props.displayClearBtn && (
