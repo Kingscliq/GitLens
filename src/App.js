@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import './App.css';
 import Navbar from './components/Navbar'
 import UserItem from './components/UserItem'
@@ -6,6 +7,7 @@ import Users from './components/Users'
 import axios from 'axios'
 import Search from './components/Search'
 import Alert from "./components/Alert"
+import About from './components/About';
   
   class App extends Component {
 
@@ -25,8 +27,15 @@ import Alert from "./components/Alert"
 // Search users
     searchUsers = async (text) =>{
       this.setState({loading: true})
-     const res = await axios.get(`https://api.github.com/search/users?q=${text}`))
+     const res = await axios.get(`https://api.github.com/search/users?q=${text}`)
      this.setState({users: res.data.items, loading: false})
+    }
+
+    getUser = async(username) => {
+      this.setState({loading: true})
+      const res = await axios.get(`https://api.github.com/users/${username}`)
+      this.setState({users: res.data.items, loading: false})
+    
     }
 
   // Clear Users
@@ -44,22 +53,34 @@ import Alert from "./components/Alert"
   }
     render() {
       return (
+        <Router>
         <div className="App">
           
-          <Navbar title='GitHub Lookup' icon='fa fa-github'/>
+          <Navbar title='GitLens' icon='fa fa-github'/>
             <div className="container">
               <Alert alert={this.state.alert}/>
-              <Search 
-                searchUsers={this.searchUsers} 
-                setAlert={this.setAlert} 
-                clearUsers={this.clearUsers} 
-                displayClearBtn={this.state.users.length > 0 ? true : false} 
-              />
-            <Users users = {this.state.users} loading={this.state.loading}/>
+              <Switch>
+                <Route exact path='/'>
+                  <Search 
+                      searchUsers={this.searchUsers} 
+                      setAlert={this.setAlert} 
+                      clearUsers={this.clearUsers} 
+                      displayClearBtn={this.state.users.length > 0 ? true : false} 
+                    />
+                  <Users users = {this.state.users} loading={this.state.loading}/>
+                </Route>
+                <Route path='/about'>
+                  <About/>
+                </Route>
+                  
+
+              </Switch>
+              
           </div>
           
           
         </div>
+        </Router>
       );
     }
   }
