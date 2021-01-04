@@ -8,11 +8,13 @@ import axios from 'axios'
 import Search from './components/Search'
 import Alert from "./components/Alert"
 import About from './components/About';
+import User from './components/User'
   
   class App extends Component {
 
     state = {
       users: [],
+      user:{},
       loading: false,
       alert: null
       
@@ -25,16 +27,17 @@ import About from './components/About';
     //  this.setState({users: res.data, loading: false})
     // }
 // Search users
-    searchUsers = async (text) =>{
+    searchUsers = async (text) => {
       this.setState({loading: true})
      const res = await axios.get(`https://api.github.com/search/users?q=${text}`)
      this.setState({users: res.data.items, loading: false})
     }
 
-    getUser = async(username) => {
+    getUser = async username => {
+      
       this.setState({loading: true})
       const res = await axios.get(`https://api.github.com/users/${username}`)
-      this.setState({users: res.data.items, loading: false})
+      this.setState({user: res.data, loading: false})
     
     }
 
@@ -52,6 +55,7 @@ import About from './components/About';
     }, 3000)
   }
     render() {
+
       return (
         <Router>
         <div className="App">
@@ -71,6 +75,20 @@ import About from './components/About';
                 </Route>
                 <Route path='/about'>
                   <About/>
+                </Route>
+                <Route 
+                  path='/user/:login'
+                  render = {props =>(
+                    <User
+                      {...props}
+                      getUser = {this.getUser}
+                      user={this.state.user}
+                      loading = {this.state.loading}
+                    />
+                  )}
+
+                 >
+                                   
                 </Route>
                   
 

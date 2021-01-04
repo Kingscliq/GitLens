@@ -36,7 +36,7 @@ import Spinner from './Spinner'
         if(props.loading){
             return <Spinner/>
         } else{
-            console.log(props.user)
+            console.log(props.users)
             return (
                 <div style={userStyle}>
                   {props.users.map(user => (

@@ -1,9 +1,10 @@
 // https://api.github.com/users  -- GitHub Api
 
 import React, { Fragment } from 'react'
+import {Link} from 'react-router-dom';
 
 const UserItem = (props) => {
-      const {avatar_url, html_url } = props.user
+      const {avatar_url, html_url, login } = props.user
         return (
            <Fragment> 
              <div className="card text-center">
@@ -15,7 +16,7 @@ const UserItem = (props) => {
                 />
                 <br/>
                 <h3>{props.user.login}</h3>
-                <a href={html_url} className='btn btn-dark'>More</a>
+                <Link to={`/user/${login}`} className='btn btn-dark'>More</Link>
              </div>
            </Fragment>
         )

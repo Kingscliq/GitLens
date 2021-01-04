@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
-
- const About = () => {
+    
+const About = () => {
     return (
         <Fragment>
             <h1>About App</h1>
