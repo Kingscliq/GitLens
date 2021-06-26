@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import './App.css';
 import Navbar from './components/Navbar'
-import UserItem from './components/UserItem'
+
 import Users from './components/Users'
 import axios from 'axios'
 import Search from './components/Search'
@@ -42,9 +42,7 @@ import User from './components/User'
     
     }
   // Get User Repos
-
   getUserRepos = async username => {
-      
     this.setState({loading: true})
     const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort="created:asc"`)
     this.setState({repos: res.data, loading: false})
