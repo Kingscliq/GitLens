@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const Search = ({setAlert, searchUsers, clearUsers, displayClearBtn }) => {
+const Search = ({showAlert, searchUsers, clearUsers, displayClearBtn }) => {
 
 const [searchInput, setSearchInput,] = useState('')
 
@@ -11,7 +11,7 @@ const [searchInput, setSearchInput,] = useState('')
  const onSubmit = (e) =>{
      e.preventDefault();
      if(searchInput === ''){
-        setAlert('Please Enter a Value', 'danger')
+        showAlert('Please Enter a Value', 'danger')
      }else{
         searchUsers(searchInput);
         setSearchInput("")
