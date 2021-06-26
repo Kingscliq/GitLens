@@ -1,36 +1,35 @@
-import React, { Component } from 'react'
+import React, {useState} from 'react'
 
-class Search extends Component {
+const Search = ({setAlert, searchUsers, clearUsers, displayClearBtn }) => {
 
- state ={
-     searchInput: ''
+const [searchInput, setSearchInput,] = useState('')
+
+
+ const handleChange = (e) =>{
+    setSearchInput(e.target.value)
  }
- handleChange = (e) =>{
-    this.setState({[e.target.name]: e.target.value})
- }
- onSubmit = (e) =>{
+ const onSubmit = (e) =>{
      e.preventDefault();
-     if(this.state.searchInput === ''){
-        this.props.setAlert('Please Enter a Value', 'danger')
+     if(searchInput === ''){
+        setAlert('Please Enter a Value', 'danger')
      }else{
-        this.props.searchUsers(this.state.searchInput);
-        this.setState({searchInput: ''})
+        searchUsers(searchInput);
+        setSearchInput("")
      }
   
 
  }
 
-    render() {
         return (
             <>
-            <form className="form" onSubmit={this.onSubmit}>
+            <form className="form" onSubmit={onSubmit}>
             <input 
             
                 type="text"
                 placeholder="Search Users" 
                 name="searchInput" 
-                value={this.state.textInput}
-                onChange={this.handleChange}
+                value={searchInput}
+                onChange={handleChange}
             />
             <input 
                 type="submit" 
@@ -38,10 +37,10 @@ class Search extends Component {
                 className="btn btn-primary btn-block"
             />
             </form>
-            {this.props.displayClearBtn && (
+            {displayClearBtn && (
                 <button 
                     className="btn btn-light btn-block" 
-                    onClick={this.props.clearUsers}>
+                    onClick={clearUsers}>
                     Clear
                     </button>
             )} 
@@ -49,6 +48,5 @@ class Search extends Component {
             </>
         )
     }
-}
 
 export default Search
