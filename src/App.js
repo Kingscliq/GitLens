@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useState}  from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import './App.css';
 import Navbar from './components/Navbar'
@@ -10,59 +10,64 @@ import Alert from "./components/Alert"
 import About from './components/About';
 import User from './components/User'
   
-  class App extends Component {
+  const App = () => {
+const [users, setUsers] = useState([])
+const [user, setUser] = useState({})
+const [loading, setLoading] = useState(false)
+const [alert, setAlert] = useState(null)
+const [repos, setRepos] = useState([])
 
-    state = {
-      users: [],
-      user:{},
-      loading: false,
-      alert: null,
-      repos: []
+    // state = {
+    //   users: [],
+    //   user:{},
+    //   loading: false,
+    //   alert: null,
+    //   repos: []
       
-    }
-
-    // async componentDidMount(){
-    //   this.setState({loading: true})
-    //  const res = await axios.get('https://api.github.com/users')
-    //  console.log(res.data)
-    //  this.setState({users: res.data, loading: false})
     // }
+
+ 
 // Search users
-    searchUsers = async (text) => {
-      this.setState({loading: true})
+   const searchUsers = async (text) => {
+      setLoading(true)
      const res = await axios.get(`https://api.github.com/search/users?q=${text}`)
-     this.setState({users: res.data.items, loading: false})
+    setUsers(res.data.items)
+    setLoading(false)
     }
 // Get Single User
-    getUser = async username => {
+    const getUser = async username => {
       
-      this.setState({loading: true})
+      setLoading(true)
       const res = await axios.get(`https://api.github.com/users/${username}`)
-      this.setState({user: res.data, loading: false})
+      setUser(res.data)
+      setLoading(false)
     
     }
   // Get User Repos
-  getUserRepos = async username => {
-    this.setState({loading: true})
+  const getUserRepos = async username => {
+    setLoading(true)
     const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort="created:asc"`)
-    this.setState({repos: res.data, loading: false})
+    setRepos(res.data)
+    setLoading(false)
   
   }
 
   // Clear Users
-  clearUsers = () =>{
-    this.setState({users: [], loading: false})
+  const clearUsers = () =>{
+    setUsers([])
+    setLoading(false)
   }
   
   //Initialise Alert
-  setAlert =(msg, type) => {
-    this.setState({alert: {msg,type}})
+  const showAlert =(msg, type) => {
+    setAlert({msg, type})
 
     setTimeout(()=>{
-      this.setState({alert: null})
+      setAlert(null)
+      setLoading(false)
     }, 3000)
   }
-    render() {
+   
 
       return (
         <Router>
@@ -70,16 +75,16 @@ import User from './components/User'
           
           <Navbar title='GitLens' icon='fa fa-github'/>
             <div className="container">
-              <Alert alert={this.state.alert}/>
+              <Alert alert={alert}/>
               <Switch>
                 <Route exact path='/'>
                   <Search 
-                      searchUsers={this.searchUsers} 
-                      setAlert={this.setAlert} 
-                      clearUsers={this.clearUsers} 
-                      displayClearBtn={this.state.users.length > 0 ? true : false} 
+                      searchUsers={searchUsers} 
+                      showAlert={showAlert} 
+                      clearUsers={clearUsers} 
+                      displayClearBtn={users.length > 0 ? true : false} 
                     />
-                  <Users users = {this.state.users} loading={this.state.loading}/>
+                  <Users users = {users} loading={loading}/>
                 </Route>
                 <Route path='/about'>
                   <About/>
@@ -89,11 +94,11 @@ import User from './components/User'
                   render = {props =>(
                     <User
                       {...props}
-                      getUser = {this.getUser}
-                      getUserRepos={this.getUserRepos}
-                      user={this.state.user}
-                      repos={this.state.repos}
-                      loading = {this.state.loading}
+                      getUser = {getUser}
+                      getUserRepos={getUserRepos}
+                      user={user}
+                      repos={repos}
+                      loading = {loading}
                     />
                   )}
 
@@ -111,7 +116,7 @@ import User from './components/User'
         </Router>
       );
     }
-  }
+  
   
   export default App
   
