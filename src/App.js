@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
@@ -21,11 +21,11 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={Home} />
 
-                <Route path="/about">
+                <Route exact path="/about">
                   <About />
                 </Route>
-                <Route path="/user/:login" component={User} />
-                <Route component={ErrorPage} />
+                <Route exact path="/user/:login" component={User} />
+                <Route path="" component={ErrorPage} />
               </Switch>
             </div>
           </div>
